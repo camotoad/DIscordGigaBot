@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord.ext.commands import has_permissions, CheckFailure
 
 class Admin(commands.Cog):
 
@@ -48,17 +47,6 @@ class Admin(commands.Cog):
     @commands.command()
     async def test(self, ctx):
         await ctx.send('Nice Test\N{OK HAND SIGN}')
-
-    @clear.error
-    @test.error
-    @kick.error
-    @ban.error
-    @unban.error
-    @load.error
-    @unload.error
-    async def error(self, ctx, error):
-        if isinstance(error, CheckFailure):
-            await ctx.send(f'It looks like you do not have the permission.')
 
 
 def setup(bot):

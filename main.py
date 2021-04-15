@@ -28,10 +28,17 @@ async def reload_cogs(ctx):
     except:
         await ctx.send('Something went wrong.')
 
-@reload_cogs.error
-async def reload_cogs_error(ctx, error):
-    if isinstance(error, CheckFailure):
-        await ctx.send(f'It looks like you do not have the permission.')
+@bot.event
+async def on_command_error(ctx, error):
+    print(error)
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send('Missing Required Argument.')
+    elif isinstance(error, commands.CommandNotFound):
+        await ctx.send('No such command is found.')
+    elif isinstance(error, CheckFailure):
+        await ctx.send("You don't have the permission to do that!")
+    else:
+        await ctx.send('Something went wrong.')
 
 if __name__ == '__main__':
     load_cogs()
