@@ -1,10 +1,15 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands import has_permissions, CheckFailure
 
 class Admin(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+
+    async def cog_check(self, ctx):
+        admin_check = ctx.author.guild_permissions.administrator
+        return admin_check
 
     @commands.command()
     async def kick(self, ctx, member: discord.Member, *, reason=None):
@@ -31,6 +36,30 @@ class Admin(commands.Cog):
     @commands.command(aliases=['cls'])
     async def clear(self, ctx, amount=5):
         await ctx.channel.purge(limit=amount+1)
+
+    @commands.command()
+    async def load(self, ctx, extension):
+        self.bot.load_extension(f'{extension}')
+
+    @commands.command()
+    async def unload(self, ctx, extension):
+        self.bot.unload_extension(f'{extension}')
+
+    @commands.command()
+    async def test(self, ctx):
+        await ctx.send('Nice Test\N{OK HAND SIGN}')
+
+    @clear.error
+    @test.error
+    @kick.error
+    @ban.error
+    @unban.error
+    @load.error
+    @unload.error
+    async def error(self, ctx, error):
+        if isinstance(error, CheckFailure):
+            await ctx.send(f'It looks like you do not have the permission.')
+
 
 def setup(bot):
     bot.add_cog(Admin(bot))
