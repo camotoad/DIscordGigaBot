@@ -26,7 +26,7 @@ async def reload_cogs(ctx):
         load_cogs()
         await ctx.send('\N{OK HAND SIGN}')
     except:
-        await ctx.send('Something went wrong.')
+        await ctx.send('Something went wrong with reloading.')
 
 @bot.event
 async def on_command_error(ctx, error):
